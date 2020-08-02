@@ -1,6 +1,6 @@
 # u
 
-:smile: u
+:smile:  Go common utility functions
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/moul.io/u)
 [![License](https://img.shields.io/badge/license-Apache--2.0%20%2F%20MIT-%2397ca00.svg)](https://github.com/moul/u/blob/master/COPYRIGHT)
@@ -16,22 +16,19 @@
 [![Go Report Card](https://goreportcard.com/badge/moul.io/u)](https://goreportcard.com/report/moul.io/u)
 [![CodeFactor](https://www.codefactor.io/repository/github/moul/u/badge)](https://www.codefactor.io/repository/github/moul/u)
 
+Based on https://github.com/kjk/u
 
 ## Usage
 
-TODO
+See [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/moul.io/u)
 
 ## Install
 
 ### Using go
 
 ```console
-$ go get -u moul.io/u
+$ go get moul.io/u
 ```
-
-### Releases
-
-See https://github.com/moul/u/releases
 
 ## Contribute
 
