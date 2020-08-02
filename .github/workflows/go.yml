@@ -26,35 +26,35 @@ on:
       - ".github/workflows/go.yml"
 
 jobs:
-  docker-build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile
-  goreleaser:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.14
-      - name: Cache Go modules
-        uses: actions/cache@v1
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-      - name: Run GoReleaser (Dry Run)
-        uses: goreleaser/goreleaser-action@v2
-        with:
-          version: latest
-          args: release --rm-dist --snapshot --skip-publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#  docker-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Build the Docker image
+#        run: docker build . --file Dockerfile
+#  goreleaser:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@master
+#      - name: Set up Go
+#        uses: actions/setup-go@v2
+#        with:
+#          go-version: 1.14
+#      - name: Cache Go modules
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/go/pkg/mod
+#          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+#          restore-keys: |
+#            ${{ runner.os }}-go-
+#      - name: Run GoReleaser (Dry Run)
+#        uses: goreleaser/goreleaser-action@v2
+#        with:
+#          version: latest
+#          args: release --rm-dist --snapshot --skip-publish
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   golangci-lint:
     runs-on: ubuntu-latest
     steps:
@@ -106,8 +106,8 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.golang }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.golang }}-
-      - name: Compile the project
-        run: make go.install
+#      - name: Compile the project
+#        run: make go.install
       - name: Run tests on Unix-like operating systems
         run: make unittest
       - name: Check go.mod and go.sum
@@ -149,8 +149,8 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.golang }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.golang }}-
-      - name: Compile the project
-        run: make go.install
+#      - name: Compile the project
+#        run: make go.install
       - name: Check go.mod and go.sum
         run: |
           go mod tidy -v
