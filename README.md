@@ -5,7 +5,6 @@
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/moul.io/u)
 [![License](https://img.shields.io/badge/license-Apache--2.0%20%2F%20MIT-%2397ca00.svg)](https://github.com/moul/u/blob/master/COPYRIGHT)
 [![GitHub release](https://img.shields.io/github/release/moul/u.svg)](https://github.com/moul/u/releases)
-[![Docker Metrics](https://images.microbadger.com/badges/image/moul/u.svg)](https://microbadger.com/images/moul/u)
 [![Made by Manfred Touron](https://img.shields.io/badge/made%20by-Manfred%20Touron-blue.svg?style=flat)](https://manfred.life/)
 
 [![Go](https://github.com/moul/u/workflows/Go/badge.svg)](https://github.com/moul/u/actions?query=workflow%3AGo)
@@ -62,9 +61,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
+<!--
 ### Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/moul/u.svg)](https://starchart.cc/moul/u)
+-->
 
 ## License
 
