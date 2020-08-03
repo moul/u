@@ -2,9 +2,16 @@ package u_test
 
 import (
 	"fmt"
+	"testing"
 
+	"github.com/stretchr/testify/require"
 	"moul.io/u"
 )
+
+func TestSha1(t *testing.T) {
+	require.NotPanics(t, func() { u.Sha1(nil) })
+	require.NotPanics(t, func() { u.Sha1Hex(nil) })
+}
 
 func ExampleSha1() {
 	fmt.Println(u.Sha1([]byte("hello world!")))
