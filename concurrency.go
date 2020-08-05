@@ -2,24 +2,22 @@ package u
 
 import "context"
 
-// MonoChild is a goroutine manager (parent) that can only have one child at a time.
-// When you call MonoChild.SetChild(), MonoChild cancels the previous child context (if any), then run a new child.
+// UniqueChild is a goroutine manager (parent) that can only have one child at a time.
+// When you call UniqueChild.SetChild(), UniqueChild cancels the previous child context (if any), then run a new child.
 // The child needs to auto-kill itself when its context is done.
-type MonoChild interface {
+type UniqueChild interface {
 	SetChild(childFn func(context.Context))
+	CloseChild()
 }
 
-func NewMonoChild(ctx context.Context) MonoChild { return &monoChild{ctx: ctx} }
+func NewUniqueChild(ctx context.Context) UniqueChild { return &uniqueChild{ctx: ctx} }
 
-type monoChild struct {
+type uniqueChild struct {
 	ctx               context.Context
 	lastChildCancelFn func()
 }
 
-func (parent *monoChild) SetChild(childFn func(context.Context)) {
-	if parent.ctx == nil {
-		panic("requires a parent context")
-	}
+func (parent *uniqueChild) SetChild(childFn func(context.Context)) {
 	if parent.lastChildCancelFn != nil {
 		parent.lastChildCancelFn()
 	}
@@ -28,4 +26,10 @@ func (parent *monoChild) SetChild(childFn func(context.Context)) {
 	childCtx, parent.lastChildCancelFn = context.WithCancel(parent.ctx)
 
 	go childFn(childCtx)
+}
+
+func (parent *uniqueChild) CloseChild() {
+	if parent.lastChildCancelFn != nil {
+		parent.lastChildCancelFn()
+	}
 }
