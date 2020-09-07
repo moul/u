@@ -15,9 +15,74 @@
 [![Go Report Card](https://goreportcard.com/badge/moul.io/u)](https://goreportcard.com/report/moul.io/u)
 [![CodeFactor](https://www.codefactor.io/repository/github/moul/u/badge)](https://www.codefactor.io/repository/github/moul/u)
 
-Based on https://github.com/kjk/u
+Inspired by https://github.com/kjk/u
 
 ## Usage
+
+[embedmd]:# (.tmp/godoc.txt txt /FUNCTIONS/ $)
+```txt
+FUNCTIONS
+
+func B64Decode(input string) ([]byte, error)
+    B64Decode try to decode an input string and returns bytes if success.
+
+func B64Encode(input []byte) string
+    B64Encode returns a base64 encoded string of input bytes.
+
+func CaptureStderr() (func() string, error)
+    CaptureStderr temporarily pipes os.Stderr into a buffer.
+
+func CaptureStdout() (func() string, error)
+    CaptureStdout temporarily pipes os.Stdout into a buffer.
+
+func CaptureStdoutAndStderr() (func() string, error)
+    CaptureStdoutAndStderr temporarily pipes os.Stdout and os.Stderr into a
+    buffer.
+
+func CombineFuncs(left func(), right ...func()) func()
+    CombineFuncs create a chain of functions. This can be particularly useful
+    for creating cleanup function progressively. It solves the infinite loop you
+    can have when trying to do it manually:
+    https://play.golang.org/p/NQem8UJ500t.
+
+func JSON(input interface{}) string
+    JSON returns a JSON representation of the passed input.
+
+func MustCaptureStderr() func() string
+    MustCaptureStderr wraps CaptureStderr and panics if initialization fails.
+
+func MustCaptureStdout() func() string
+    MustCaptureStdout wraps CaptureStdout and panics if initialization fails.
+
+func MustCaptureStdoutAndStderr() func() string
+    MustCaptureStdoutAndStderr wraps CaptureStdoutAndStderr and panics if
+    initialization fails.
+
+func PrettyJSON(input interface{}) string
+    PrettyJSON returns an indented JSON representation of the passed input.
+
+func Sha1(data []byte) []byte
+func Sha1Hex(data []byte) string
+func SilentClose(closer io.Closer)
+    SilentClose calls an io.Closer.Close() function and ignore potential errors.
+
+    You can use it as `defer SilenceClose(f)`
+
+
+TYPES
+
+type UniqueChild interface {
+	SetChild(childFn func(context.Context))
+	CloseChild()
+}
+    UniqueChild is a goroutine manager (parent) that can only have one child at
+    a time. When you call UniqueChild.SetChild(), UniqueChild cancels the
+    previous child context (if any), then run a new child. The child needs to
+    auto-kill itself when its context is done.
+
+func NewUniqueChild(ctx context.Context) UniqueChild
+
+```
 
 See [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/moul.io/u)
 
