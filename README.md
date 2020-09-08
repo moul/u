@@ -58,6 +58,10 @@ func MustCaptureStdoutAndStderr() func() string
     MustCaptureStdoutAndStderr wraps CaptureStdoutAndStderr and panics if
     initialization fails.
 
+func MustTempfileWithContent(content []byte) (*os.File, func())
+    MustTempfileWithContent wraps TempfileWithContent and panics if
+    initialization fails.
+
 func PrettyJSON(input interface{}) string
     PrettyJSON returns an indented JSON representation of the passed input.
 
@@ -67,6 +71,12 @@ func SilentClose(closer io.Closer)
     SilentClose calls an io.Closer.Close() function and ignore potential errors.
 
     You can use it as `defer SilenceClose(f)`
+
+func TempfileWithContent(content []byte) (*os.File, func(), error)
+    TempfileWithContent creates a tempfile with specified content written in it,
+    it also seeks the file pointer so you can read it directly. The second
+    returned parameter is a cleanup function that closes and removes the temp
+    file.
 
 
 TYPES
