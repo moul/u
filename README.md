@@ -67,6 +67,10 @@ func PrettyJSON(input interface{}) string
 
 func Sha1(data []byte) []byte
 func Sha1Hex(data []byte) string
+func ShortDuration(d time.Duration) string
+    ShortDuration returns a short human-friendly representation of a duration.
+    For duration < 100 days, the output length will be <= 7.
+
 func SilentClose(closer io.Closer)
     SilentClose calls an io.Closer.Close() function and ignore potential errors.
 
