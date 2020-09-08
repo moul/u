@@ -3,7 +3,6 @@ package u_test
 import (
 	"fmt"
 
-	"moul.io/godev"
 	"moul.io/u"
 )
 
@@ -19,9 +18,9 @@ func ExampleB64Decode() {
 }
 
 func ExamplePrettyJSON() {
-	fmt.Println(godev.PrettyJSON([]string{"hello", "world"}))
-	fmt.Println(godev.PrettyJSON(42))
-	fmt.Println(godev.PrettyJSON(nil))
+	fmt.Println(u.PrettyJSON([]string{"hello", "world"}))
+	fmt.Println(u.PrettyJSON(42))
+	fmt.Println(u.PrettyJSON(nil))
 	// Output:
 	// [
 	//   "hello",
@@ -32,9 +31,9 @@ func ExamplePrettyJSON() {
 }
 
 func ExampleJSON() {
-	fmt.Println(godev.JSON([]string{"hello", "world"}))
-	fmt.Println(godev.JSON(42))
-	fmt.Println(godev.JSON(nil))
+	fmt.Println(u.JSON([]string{"hello", "world"}))
+	fmt.Println(u.JSON(42))
+	fmt.Println(u.JSON(nil))
 	// Output:
 	// ["hello","world"]
 	// 42
