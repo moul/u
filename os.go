@@ -74,3 +74,27 @@ func MustExpandUser(path string) string {
 	}
 	return ret
 }
+
+// PathExists checks whether a path exists or not.
+func PathExists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}
+
+// DirExists checks whether a path exists and is a directory.
+func DirExists(path string) bool {
+	fi, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return fi.IsDir()
+}
+
+// FileExists checks whether a path exists and is a regular file.
+func FileExists(path string) bool {
+	fi, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return fi.Mode().IsRegular()
+}
