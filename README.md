@@ -45,6 +45,17 @@ func CombineFuncs(left func(), right ...func()) func()
     can have when trying to do it manually:
     https://play.golang.org/p/NQem8UJ500t.
 
+func DirExists(path string) bool
+    DirExists checks whether a path exists and is a directory.
+
+func ExecStandaloneOutputs(cmd *exec.Cmd) ([]byte, []byte, error)
+    ExecStandaloneOutputs runs the command and returns its standard output and
+    standard error.
+
+func ExpandUser(path string) (string, error)
+func FileExists(path string) bool
+    FileExists checks whether a path exists and is a regular file.
+
 func JSON(input interface{}) string
     JSON returns a JSON representation of the passed input.
 
@@ -58,12 +69,23 @@ func MustCaptureStdoutAndStderr() func() string
     MustCaptureStdoutAndStderr wraps CaptureStdoutAndStderr and panics if
     initialization fails.
 
+func MustExpandUser(path string) string
+    MustExpandUser wraps ExpandUser and panics if initialization fails.
+
 func MustTempfileWithContent(content []byte) (*os.File, func())
     MustTempfileWithContent wraps TempfileWithContent and panics if
     initialization fails.
 
+func PathExists(path string) bool
+    PathExists checks whether a path exists or not.
+
 func PrettyJSON(input interface{}) string
     PrettyJSON returns an indented JSON representation of the passed input.
+
+func SafeExec(cmd *exec.Cmd) string
+    SafeExec runs a command and return a string containing the combined standard
+    output and standard error. If the program fails, the result of `err` is
+    appended to the output.
 
 func Sha1(data []byte) []byte
 func Sha1Hex(data []byte) string
@@ -82,6 +104,7 @@ func TempfileWithContent(content []byte) (*os.File, func(), error)
     returned parameter is a cleanup function that closes and removes the temp
     file.
 
+func WaitForCtrlC()
 
 TYPES
 
