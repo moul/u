@@ -17,3 +17,13 @@ func ExampleExecStandaloneOutputs() {
 	// stderr: stderr
 	// err:  <nil>
 }
+
+func ExampleSafeExec() {
+	out := u.SafeExec(exec.Command("sh", "-c", "echo stdout; echo 1>&2 stderr; exit 1"))
+	fmt.Println(out)
+	// Output:
+	// stdout
+	// stderr
+	//
+	// error: exit status 1
+}
