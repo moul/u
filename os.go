@@ -2,6 +2,7 @@ package u
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -97,4 +98,47 @@ func FileExists(path string) bool {
 		return false
 	}
 	return fi.Mode().IsRegular()
+}
+
+// TempFileName returns a valid temporary file name (the file is not created).
+func TempFileName(dir, pattern string) (string, error) {
+	tmpfile, err := ioutil.TempFile(dir, pattern)
+	if err != nil {
+		return "", err
+	}
+	tmpfile.Close()
+	os.Remove(tmpfile.Name())
+	return tmpfile.Name(), nil
+}
+
+// MustTempFileName wraps TempFileName and panics if initialization fails.
+func MustTempFileName(dir, pattern string) string {
+	ret, err := TempFileName(dir, pattern)
+	if err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// CreateEmptyFileWithSize creates a new file of the desired size, filled with zeros.
+func CreateEmptyFileWithSize(path string, size uint) error {
+	fd, err := os.Create(path)
+	if err != nil {
+		return fmt.Errorf("create failed: %v", err)
+	}
+	if size > 0 {
+		_, err = fd.Seek(int64(size)-1, 0)
+		if err != nil {
+			return fmt.Errorf("seek failed: %v", err)
+		}
+		_, err = fd.Write([]byte{0})
+		if err != nil {
+			return fmt.Errorf("write failed: %v", err)
+		}
+	}
+	err = fd.Close()
+	if err != nil {
+		return fmt.Errorf("close failed: %v", err)
+	}
+	return nil
 }

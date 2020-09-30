@@ -105,3 +105,54 @@ func ExampleFileExists() {
 	// true
 	// false
 }
+
+func ExampleTempFileName() {
+	tempname, err := u.TempFileName("", "u")
+	if err != nil {
+		panic(err)
+	}
+	if u.FileExists(tempname) {
+		panic("there is already one file with tempname")
+	}
+	f, err := os.Create(tempname)
+	if err != nil {
+		panic(err)
+	}
+	defer os.Remove(tempname)
+	f.Close()
+	fmt.Println("Everything is OK!")
+	// Output: Everything is OK!
+}
+
+func ExampleMustTempFileName() {
+	tempname := u.MustTempFileName("", "u")
+	f, _ := os.Create(tempname)
+	f.Close()
+	os.Remove(tempname)
+}
+
+func ExampleCreateEmptyFileWithSize() {
+	tempname := u.MustTempFileName("", "u")
+
+	err := u.CreateEmptyFileWithSize(tempname, 42)
+	if err != nil {
+		panic(err)
+	}
+	defer os.Remove(tempname)
+
+	fi, err := os.Stat(tempname)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(fi.Size())
+
+	b, err := ioutil.ReadFile(tempname)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(b)
+
+	// Output:
+	// 42
+	// [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+}

@@ -45,6 +45,10 @@ func CombineFuncs(left func(), right ...func()) func()
     can have when trying to do it manually:
     https://play.golang.org/p/NQem8UJ500t.
 
+func CreateEmptyFileWithSize(path string, size uint) error
+    CreateEmptyFileWithSize creates a new file of the desired size, filled with
+    zeros.
+
 func DirExists(path string) bool
     DirExists checks whether a path exists and is a directory.
 
@@ -72,6 +76,9 @@ func MustCaptureStdoutAndStderr() func() string
 func MustExpandUser(path string) string
     MustExpandUser wraps ExpandUser and panics if initialization fails.
 
+func MustTempFileName(dir, pattern string) string
+    MustTempFileName wraps TempFileName and panics if initialization fails.
+
 func MustTempfileWithContent(content []byte) (*os.File, func())
     MustTempfileWithContent wraps TempfileWithContent and panics if
     initialization fails.
@@ -97,6 +104,9 @@ func SilentClose(closer io.Closer)
     SilentClose calls an io.Closer.Close() function and ignore potential errors.
 
     You can use it as `defer SilenceClose(f)`
+
+func TempFileName(dir, pattern string) (string, error)
+    TempFileName returns a valid temporary file name (the file is not created).
 
 func TempfileWithContent(content []byte) (*os.File, func(), error)
     TempfileWithContent creates a tempfile with specified content written in it,
