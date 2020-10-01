@@ -114,6 +114,15 @@ func TempfileWithContent(content []byte) (*os.File, func(), error)
     returned parameter is a cleanup function that closes and removes the temp
     file.
 
+func Unzip(src string, dest string) ([]string, error)
+    Unzip decompresses a zip archive, moving all files and folders within the
+    zip file to an output directory. Based on
+    https://golangcode.com/unzip-files-in-go/ (MIT).
+
+func UnzipBytes(src []byte, dest string) ([]string, error)
+    UnzipBytes is similar to Unzip but takes a zip archive as bytes instead of
+    looking for a real file.
+
 func WaitForCtrlC()
 
 TYPES
