@@ -8,3 +8,5 @@ generate:
 	go doc -all > .tmp/godoc.txt
 	embedmd -w README.md
 	rm -rf .tmp
+
+	$(GO) run github.com/tailscale/depaware --update .
