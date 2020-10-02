@@ -31,3 +31,9 @@ func SafeExec(cmd *exec.Cmd) string {
 	}
 	return out
 }
+
+// CommandExists checks whether a command is available in the $PATH.
+func CommandExists(command string) bool {
+	_, err := exec.LookPath(command)
+	return err == nil
+}
