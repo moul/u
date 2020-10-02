@@ -27,3 +27,11 @@ func ExampleSafeExec() {
 	//
 	// error: exit status 1
 }
+
+func ExampleCommandExists() {
+	fmt.Println(u.CommandExists("go"))
+	fmt.Println(u.CommandExists("asldkglsakdjaslkdg"))
+	// Output:
+	// true
+	// false
+}

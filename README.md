@@ -45,6 +45,9 @@ func CombineFuncs(left func(), right ...func()) func()
     can have when trying to do it manually:
     https://play.golang.org/p/NQem8UJ500t.
 
+func CommandExists(command string) bool
+    CommandExists checks whether a command is available in the $PATH.
+
 func CreateEmptyFileWithSize(path string, size uint) error
     CreateEmptyFileWithSize creates a new file of the desired size, filled with
     zeros.
