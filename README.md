@@ -130,6 +130,16 @@ func WaitForCtrlC()
 
 TYPES
 
+type MutexMap struct {
+	// Has unexported fields.
+}
+    MutexMap manages a pool of mutexes that can be get by key. MutexMap is
+    thread-safe.
+
+func (mm *MutexMap) Lock(key string) func()
+    Lock locks a mutex by key, and returns a callback for unlocking unlock. Lock
+    will automatically create a new mutex for new keys.
+
 type UniqueChild interface {
 	SetChild(childFn func(context.Context))
 	CloseChild()
