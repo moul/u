@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"os/user"
 	"strings"
 )
 
@@ -141,4 +142,17 @@ func CreateEmptyFileWithSize(path string, size uint) error {
 		return fmt.Errorf("close failed: %v", err)
 	}
 	return nil
+}
+
+// CurrentUsename returns the current user's username.
+// If username cannot be retrieved, it returns the passed fallback.
+func CurrentUsername(fallback string) string {
+	current, err := user.Current()
+	if err == nil && current.Username != "" {
+		return current.Username
+	}
+	if name := os.Getenv("USER"); name != "" {
+		return name
+	}
+	return fallback
 }
