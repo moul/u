@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"testing"
 
 	"moul.io/u"
 )
@@ -155,4 +156,15 @@ func ExampleCreateEmptyFileWithSize() {
 	// Output:
 	// 42
 	// [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+}
+
+func ExampleCurrentUsername() {
+	fmt.Println(u.CurrentUsername("fallback"))
+}
+
+func TestCurrentUsername(t *testing.T) {
+	username := u.CurrentUsername("fallback")
+	if username == "fallback" || username == "" {
+		t.Errorf("Expected username to set, got %q.", username)
+	}
 }

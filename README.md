@@ -52,6 +52,10 @@ func CreateEmptyFileWithSize(path string, size uint) error
     CreateEmptyFileWithSize creates a new file of the desired size, filled with
     zeros.
 
+func CurrentUsername(fallback string) string
+    CurrentUsename returns the current user's username. If username cannot be
+    retrieved, it returns the passed fallback.
+
 func DirExists(path string) bool
     DirExists checks whether a path exists and is a directory.
 
