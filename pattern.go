@@ -11,3 +11,10 @@ func CombineFuncs(left func(), right ...func()) func() {
 		}
 	}
 }
+
+// CheckErr panics if the passed error is not nil.
+func CheckErr(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
