@@ -39,6 +39,9 @@ func CaptureStdoutAndStderr() (func() string, error)
     CaptureStdoutAndStderr temporarily pipes os.Stdout and os.Stderr into a
     buffer.
 
+func CheckErr(err error)
+    CheckErr panics if the passed error is not nil.
+
 func CombineFuncs(left func(), right ...func()) func()
     CombineFuncs create a chain of functions. This can be particularly useful
     for creating cleanup function progressively. It solves the infinite loop you
@@ -64,8 +67,15 @@ func ExecStandaloneOutputs(cmd *exec.Cmd) ([]byte, []byte, error)
     standard error.
 
 func ExpandUser(path string) (string, error)
+func FanIn(chans ...<-chan interface{}) <-chan interface{}
+    FanIn merges multiple input chans events into one.
+
 func FileExists(path string) bool
     FileExists checks whether a path exists and is a regular file.
+
+func Future(fn func() (interface{}, error)) <-chan FutureRet
+    Future starts running the given function in background and return a chan
+    that will return the result of the execution.
 
 func JSON(input interface{}) string
     JSON returns a JSON representation of the passed input.
@@ -134,6 +144,12 @@ func WaitForCtrlC()
 
 TYPES
 
+type FutureRet struct {
+	Ret interface{}
+	Err error
+}
+    FutureRet is a generic struct returned by Future.
+
 type MutexMap struct {
 	// Has unexported fields.
 }
@@ -154,6 +170,7 @@ type UniqueChild interface {
     auto-kill itself when its context is done.
 
 func NewUniqueChild(ctx context.Context) UniqueChild
+    NewUniqueChild instantiates and returns a UniqueChild manager.
 
 ```
 

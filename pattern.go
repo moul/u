@@ -18,3 +18,19 @@ func CheckErr(err error) {
 		panic(err)
 	}
 }
+
+// Future starts running the given function in background and return a chan that will return the result of the execution.
+func Future(fn func() (interface{}, error)) <-chan FutureRet {
+	c := make(chan FutureRet, 1)
+	go func() {
+		ret, err := fn()
+		c <- FutureRet{Ret: ret, Err: err}
+	}()
+	return c
+}
+
+// FutureRet is a generic struct returned by Future.
+type FutureRet struct {
+	Ret interface{}
+	Err error
+}
