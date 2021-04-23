@@ -131,6 +131,15 @@ func TempfileWithContent(content []byte) (*os.File, func(), error)
     returned parameter is a cleanup function that closes and removes the temp
     file.
 
+func UniqueInterfaces(input []interface{}) []interface{}
+    UniqueInterfaces removes duplicate values from an interface slice.
+
+func UniqueInts(input []int) []int
+    UniqueInts removes duplicate values from an int slice.
+
+func UniqueStrings(input []string) []string
+    UniqueStrings removes duplicate values from a string slice.
+
 func Unzip(src string, dest string) ([]string, error)
     Unzip decompresses a zip archive, moving all files and folders within the
     zip file to an output directory. Based on
