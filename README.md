@@ -106,6 +106,9 @@ func PathExists(path string) bool
 func PrettyJSON(input interface{}) string
     PrettyJSON returns an indented JSON representation of the passed input.
 
+func RandomLetters(n int) string
+    RandomLetters returns a string containing 'n' random letters.
+
 func SafeExec(cmd *exec.Cmd) string
     SafeExec runs a command and return a string containing the combined standard
     output and standard error. If the program fails, the result of `err` is
