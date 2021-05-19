@@ -1,7 +1,10 @@
 package u_test
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
+	"testing"
 
 	"moul.io/u"
 )
@@ -38,4 +41,37 @@ func ExampleJSON() {
 	// ["hello","world"]
 	// 42
 	// null
+}
+
+// BenchmarkB64Encode - repetitive benchmark test for b64 encoding
+func BenchmarkB64Encode(b *testing.B) {
+	stringSize := 10000000
+	s := strings.Repeat("a", stringSize)
+	for i := 0; i < b.N; i++ {
+		bytes, _ := json.Marshal(s)
+		u.B64Encode(bytes)
+	}
+}
+
+// BenchmarkB64Encode12345 - case benchmark tests
+func BenchmarkB64Encode1(b *testing.B) {
+	benchmarkB64Encode(100, b)
+}
+func BenchmarkB64Encode2(b *testing.B) {
+	benchmarkB64Encode(10000, b)
+}
+func BenchmarkB64Encode3(b *testing.B) {
+	benchmarkB64Encode(1000000, b)
+}
+func BenchmarkB64Encode4(b *testing.B) {
+	benchmarkB64Encode(100000000, b)
+}
+func BenchmarkB64Encode5(b *testing.B) {
+	benchmarkB64Encode(10000000000, b)
+}
+
+func benchmarkB64Encode(size int, b *testing.B) {
+	s := strings.Repeat("s", size)
+	bytes, _ := json.Marshal(s)
+	u.B64Encode(bytes)
 }
