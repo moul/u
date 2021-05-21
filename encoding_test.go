@@ -75,3 +75,40 @@ func benchmarkB64Encode(size int, b *testing.B) {
 	bytes, _ := json.Marshal(s)
 	u.B64Encode(bytes)
 }
+
+// BenchmarkB64Decode repetitive benchmark test for b64 decoding
+func BenchmarkB64Decode(b *testing.B) {
+	stringSize := 10000000
+	s := strings.Repeat("YWFh", stringSize)
+	for i := 0; i < b.N; i++ {
+		_, err := u.B64Decode(s)
+		if err != nil {
+			return
+		}
+	}
+}
+
+// BenchmarkB64Decode12345 - case benchmark tests
+func BenchmarkB64Decode1(b *testing.B) {
+	benchmarkB64Decode(100, b)
+}
+func BenchmarkB64Decode2(b *testing.B) {
+	benchmarkB64Decode(10000, b)
+}
+func BenchmarkB64Decode3(b *testing.B) {
+	benchmarkB64Decode(1000000, b)
+}
+func BenchmarkB64Decode4(b *testing.B) {
+	benchmarkB64Decode(100000000, b)
+}
+func BenchmarkB64Decode5(b *testing.B) {
+	benchmarkB64Decode(10000000000, b)
+}
+
+func benchmarkB64Decode(size int, b *testing.B) {
+	s := strings.Repeat("YWFh", size)
+	_, err := u.B64Decode(s)
+	if err != nil {
+		b.Fail()
+	}
+}
