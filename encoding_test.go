@@ -112,3 +112,10 @@ func benchmarkB64Decode(size int, b *testing.B) {
 		b.Fail()
 	}
 }
+
+func BenchmarkPrettyJSON(b *testing.B) {
+	s := u.JSON([]string{"hello", "world"})
+	for i := 0; i < b.N; i++ {
+		u.PrettyJSON(s)
+	}
+}
