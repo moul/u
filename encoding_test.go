@@ -45,77 +45,22 @@ func ExampleJSON() {
 
 // BenchmarkB64Encode - repetitive benchmark test for b64 encoding
 func BenchmarkB64Encode(b *testing.B) {
-	stringSize := 10000000
-	s := strings.Repeat("a", stringSize)
-	for i := 0; i < b.N; i++ {
-		bytes, _ := json.Marshal(s)
-		u.B64Encode(bytes)
+	cases := []struct {
+		StringSize int
+	}{
+		{StringSize: 1000},
+		{StringSize: 100000},
+		{StringSize: 100000000},
 	}
-}
-
-// BenchmarkB64Encode12345 - case benchmark tests
-func BenchmarkB64Encode1(b *testing.B) {
-	benchmarkB64Encode(100, b)
-}
-func BenchmarkB64Encode2(b *testing.B) {
-	benchmarkB64Encode(10000, b)
-}
-func BenchmarkB64Encode3(b *testing.B) {
-	benchmarkB64Encode(1000000, b)
-}
-func BenchmarkB64Encode4(b *testing.B) {
-	benchmarkB64Encode(100000000, b)
-}
-func BenchmarkB64Encode5(b *testing.B) {
-	benchmarkB64Encode(10000000000, b)
-}
-
-func benchmarkB64Encode(size int, b *testing.B) {
-	s := strings.Repeat("s", size)
-	bytes, _ := json.Marshal(s)
-	u.B64Encode(bytes)
-}
-
-// BenchmarkB64Decode repetitive benchmark test for b64 decoding
-func BenchmarkB64Decode(b *testing.B) {
-	stringSize := 10000000
-	s := strings.Repeat("YWFh", stringSize)
+	var s string
 	for i := 0; i < b.N; i++ {
-		_, err := u.B64Decode(s)
-		if err != nil {
-			return
+		for _, bc := range cases {
+			b.Run(fmt.Sprintf("String Size = %d", bc.StringSize), func(b *testing.B) {
+				s = strings.Repeat("A", bc.StringSize)
+				bytes, _ := json.Marshal(s)
+				u.B64Encode(bytes)
+			})
 		}
 	}
-}
 
-// BenchmarkB64Decode12345 - case benchmark tests
-func BenchmarkB64Decode1(b *testing.B) {
-	benchmarkB64Decode(100, b)
-}
-func BenchmarkB64Decode2(b *testing.B) {
-	benchmarkB64Decode(10000, b)
-}
-func BenchmarkB64Decode3(b *testing.B) {
-	benchmarkB64Decode(1000000, b)
-}
-func BenchmarkB64Decode4(b *testing.B) {
-	benchmarkB64Decode(100000000, b)
-}
-func BenchmarkB64Decode5(b *testing.B) {
-	benchmarkB64Decode(10000000000, b)
-}
-
-func benchmarkB64Decode(size int, b *testing.B) {
-	s := strings.Repeat("YWFh", size)
-	_, err := u.B64Decode(s)
-	if err != nil {
-		b.Fail()
-	}
-}
-
-func BenchmarkPrettyJSON(b *testing.B) {
-	s := u.JSON([]string{"hello", "world"})
-	for i := 0; i < b.N; i++ {
-		u.PrettyJSON(s)
-	}
 }
