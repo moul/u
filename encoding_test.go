@@ -50,13 +50,11 @@ func BenchmarkB64Encode(b *testing.B) {
 		{DataSize: 100000},
 		{DataSize: 100000000},
 	}
-	for i := 0; i < b.N; i++ {
-		for _, bc := range cases {
-			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
-				data := make([]byte, bc.DataSize)
-				rand.Read(data)
-				u.B64Encode(data)
-			})
-		}
+	for _, bc := range cases {
+		b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
+			data := make([]byte, bc.DataSize)
+			rand.Read(data)
+			u.B64Encode(data)
+		})
 	}
 }
