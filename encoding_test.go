@@ -1,9 +1,8 @@
 package u_test
 
 import (
-	"encoding/json"
 	"fmt"
-	"strings"
+	"math/rand"
 	"testing"
 
 	"moul.io/u"
@@ -43,24 +42,21 @@ func ExampleJSON() {
 	// null
 }
 
-// BenchmarkB64Encode - repetitive benchmark test for b64 encoding
 func BenchmarkB64Encode(b *testing.B) {
 	cases := []struct {
-		StringSize int
+		DataSize int
 	}{
-		{StringSize: 1000},
-		{StringSize: 100000},
-		{StringSize: 100000000},
+		{DataSize: 1000},
+		{DataSize: 100000},
+		{DataSize: 100000000},
 	}
-	var s string
 	for i := 0; i < b.N; i++ {
 		for _, bc := range cases {
-			b.Run(fmt.Sprintf("String Size = %d", bc.StringSize), func(b *testing.B) {
-				s = strings.Repeat("A", bc.StringSize)
-				bytes, _ := json.Marshal(s)
-				u.B64Encode(bytes)
+			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
+				data := make([]byte, bc.DataSize)
+				rand.Read(data)
+				u.B64Encode(data)
 			})
 		}
 	}
-
 }
