@@ -1,8 +1,9 @@
 package u_test
 
 import (
+	"bytes"
 	"fmt"
-	"math/rand"
+	"strings"
 	"testing"
 
 	"moul.io/u"
@@ -50,11 +51,31 @@ func BenchmarkB64Encode(b *testing.B) {
 		{DataSize: 100000},
 		{DataSize: 100000000},
 	}
-	for _, bc := range cases {
-		b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
-			data := make([]byte, bc.DataSize)
-			rand.Read(data)
-			u.B64Encode(data)
-		})
+	for i := 0; i < b.N; i++ {
+		for _, bc := range cases {
+			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
+				u.B64Encode(bytes.Repeat([]byte{'A'}, bc.DataSize))
+			})
+		}
+	}
+}
+
+func BenchmarkB64Decode(b *testing.B) {
+	cases := []struct {
+		DataSize int
+	}{
+		{DataSize: 1000},
+		{DataSize: 100000},
+		{DataSize: 100000000},
+	}
+	for i := 0; i < b.N; i++ {
+		for _, bc := range cases {
+			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
+				_, err := u.B64Decode(strings.Repeat("a", bc.DataSize))
+				if err != nil {
+					b.Error(err)
+				}
+			})
+		}
 	}
 }
