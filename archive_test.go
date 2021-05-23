@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"testing"
 
 	"moul.io/u"
 )
@@ -349,4 +350,43 @@ var zipdata_zipline = []byte{
 	0x2f, 0x74, 0x6d, 0x70, 0x2f, 0x65, 0x76, 0x69, 0x6c, 0x2e, 0x74, 0x78, 0x74, 0x50, 0x4b,
 	0x05, 0x06, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x02, 0x00, 0x00, 0x01, 0x00, 0x00, 0x0b,
 	0x01, 0x00, 0x00, 0x00, 0x00,
+}
+
+func BenchmarkUnzip(b *testing.B) {
+	// create zipfile on fs
+	f, cleanup, err := u.TempfileWithContent(zipdata_simple)
+	if err != nil {
+		panic(err)
+	}
+	defer cleanup()
+
+	// create tempdir for dest
+	tempdir, err := ioutil.TempDir("", "u")
+	if err != nil {
+		panic(err)
+	}
+	defer os.RemoveAll(tempdir)
+
+	for i := 0; i < b.N; i++ {
+		_, err := u.Unzip(f.Name(), tempdir)
+		if err != nil {
+			b.Error(err)
+		}
+	}
+}
+
+func BenchmarkUnzipBytes(b *testing.B) {
+	// create tempdir for dest
+	tempdir, err := ioutil.TempDir("", "u")
+	if err != nil {
+		panic(err)
+	}
+	defer os.RemoveAll(tempdir)
+
+	for i := 0; i < b.N; i++ {
+		_, err := u.UnzipBytes(zipdata_simple, tempdir)
+		if err != nil {
+			b.Error(err)
+		}
+	}
 }
