@@ -51,8 +51,8 @@ func BenchmarkB64Encode(b *testing.B) {
 		{DataSize: 100000},
 		{DataSize: 100000000},
 	}
-	for i := 0; i < b.N; i++ {
-		for _, bc := range cases {
+	for _, bc := range cases {
+		for i := 0; i < b.N; i++ {
 			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
 				u.B64Encode(bytes.Repeat([]byte{'A'}, bc.DataSize))
 			})
@@ -68,8 +68,8 @@ func BenchmarkB64Decode(b *testing.B) {
 		{DataSize: 100000},
 		{DataSize: 100000000},
 	}
-	for i := 0; i < b.N; i++ {
-		for _, bc := range cases {
+	for _, bc := range cases {
+		for i := 0; i < b.N; i++ {
 			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
 				_, err := u.B64Decode(strings.Repeat("a", bc.DataSize))
 				if err != nil {
