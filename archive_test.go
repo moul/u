@@ -367,6 +367,7 @@ func BenchmarkUnzip(b *testing.B) {
 	}
 	defer os.RemoveAll(tempdir)
 
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, err := u.Unzip(f.Name(), tempdir)
 		if err != nil {
@@ -383,6 +384,7 @@ func BenchmarkUnzipBytes(b *testing.B) {
 	}
 	defer os.RemoveAll(tempdir)
 
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, err := u.UnzipBytes(zipdata_simple, tempdir)
 		if err != nil {

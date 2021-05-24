@@ -45,37 +45,41 @@ func ExampleJSON() {
 
 func BenchmarkB64Encode(b *testing.B) {
 	cases := []struct {
-		DataSize int
+		Name string
+		Data []byte
 	}{
-		{DataSize: 1000},
-		{DataSize: 100000},
-		{DataSize: 100000000},
+		{"1", bytes.Repeat([]byte{'A'}, 1)},
+		{"1000", bytes.Repeat([]byte{'A'}, 1000)},
+		{"1000000000", bytes.Repeat([]byte{'A'}, 1000000)},
 	}
+	b.ResetTimer()
 	for _, bc := range cases {
-		for i := 0; i < b.N; i++ {
-			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
-				u.B64Encode(bytes.Repeat([]byte{'A'}, bc.DataSize))
-			})
-		}
+		b.Run(bc.Name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				u.B64Encode(bc.Data)
+			}
+		})
 	}
 }
 
 func BenchmarkB64Decode(b *testing.B) {
 	cases := []struct {
-		DataSize int
+		Name string
+		Data string
 	}{
-		{DataSize: 1000},
-		{DataSize: 100000},
-		{DataSize: 100000000},
+		{"1000", strings.Repeat("a", 1000)},
+		{"10000", strings.Repeat("a", 10000)},
+		{"100000", strings.Repeat("a", 100000)},
 	}
+	b.ResetTimer()
 	for _, bc := range cases {
-		for i := 0; i < b.N; i++ {
-			b.Run(fmt.Sprintf("%d", bc.DataSize), func(b *testing.B) {
-				_, err := u.B64Decode(strings.Repeat("a", bc.DataSize))
+		b.Run(bc.Name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, err := u.B64Decode(bc.Data)
 				if err != nil {
 					b.Error(err)
 				}
-			})
-		}
+			}
+		})
 	}
 }
