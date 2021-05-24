@@ -196,6 +196,28 @@ See [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?lo
 $ go get moul.io/u
 ```
 
+## Benchmarks
+
+[embedmd]:# (.tmp/bench.txt txt)
+```txt
+benchmark                                     iter          time/iter
+---------                                     ----          ---------
+BenchmarkUnzip-12                             4725    273823.00 ns/op
+BenchmarkUnzipBytes-12                        4614    270191.00 ns/op
+BenchmarkB64Encode/1-12                   14198170        79.61 ns/op
+BenchmarkB64Encode/1-parallel-12         100040912        10.75 ns/op
+BenchmarkB64Encode/1000-12                  435790      5167.00 ns/op
+BenchmarkB64Encode/1000-parallel-12        1369093       885.30 ns/op
+BenchmarkB64Encode/1000000-12                  278   4470872.00 ns/op
+BenchmarkB64Encode/1000000-parallel-12        2394    490425.00 ns/op
+BenchmarkB64Decode/1000-12                  458520      4065.00 ns/op
+BenchmarkB64Decode/1000-parallel-12        1927333       641.00 ns/op
+BenchmarkB64Decode/10000-12                  32613     38194.00 ns/op
+BenchmarkB64Decode/10000-parallel-12        193815      5905.00 ns/op
+BenchmarkB64Decode/100000-12                  5877    364683.00 ns/op
+BenchmarkB64Decode/100000-parallel-12        25208     65093.00 ns/op
+```
+
 ## Contribute
 
 ![Contribute <3](https://raw.githubusercontent.com/moul/moul/master/contribute.gif)
