@@ -3,7 +3,6 @@ module moul.io/u
 go 1.13
 
 require (
-	github.com/cespare/prettybench v0.0.0-20150116022406-03b8cfe5406c // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e // indirect
 	github.com/stretchr/testify v1.7.0
