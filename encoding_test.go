@@ -50,14 +50,22 @@ func BenchmarkB64Encode(b *testing.B) {
 	}{
 		{"1", bytes.Repeat([]byte{'A'}, 1)},
 		{"1000", bytes.Repeat([]byte{'A'}, 1000)},
-		{"1000000000", bytes.Repeat([]byte{'A'}, 1000000)},
+		{"1000000", bytes.Repeat([]byte{'A'}, 1000000)},
 	}
-	b.ResetTimer()
 	for _, bc := range cases {
 		b.Run(bc.Name, func(b *testing.B) {
+			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				u.B64Encode(bc.Data)
 			}
+		})
+		b.Run(bc.Name+"-parallel", func(b *testing.B) {
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					u.B64Encode(bc.Data)
+				}
+			})
 		})
 	}
 }
@@ -80,6 +88,17 @@ func BenchmarkB64Decode(b *testing.B) {
 					b.Error(err)
 				}
 			}
+		})
+		b.Run(bc.Name+"-parallel", func(b *testing.B) {
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					_, err := u.B64Decode(bc.Data)
+					if err != nil {
+						b.Error(err)
+					}
+				}
+			})
 		})
 	}
 }
