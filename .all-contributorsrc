@@ -26,6 +26,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "Dzalevski",
+      "name": "Darko Djalevski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9572827?v=4",
+      "profile": "https://darkodjalevski.me/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
