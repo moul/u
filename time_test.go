@@ -2,6 +2,7 @@ package u_test
 
 import (
 	"fmt"
+	"testing"
 	"time"
 
 	"moul.io/u"
@@ -67,4 +68,30 @@ func ExampleShortDuration() {
 	// 1h
 	// 1d
 	// 1h0m1s
+}
+
+func BenchmarkShortDuration(b *testing.B) {
+	cases := []struct {
+		Name string
+		Data time.Duration
+	}{
+		{"Simple", time.Second * 5},
+		{"Complex", time.Nanosecond * 123456789101112},
+	}
+	for _, bc := range cases {
+		b.Run(bc.Name, func(b *testing.B) {
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				u.ShortDuration(bc.Data)
+			}
+		})
+		b.Run(bc.Name+"-parallel", func(b *testing.B) {
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					u.ShortDuration(bc.Data)
+				}
+			})
+		})
+	}
 }

@@ -3,6 +3,7 @@ package u_test
 import (
 	"fmt"
 	"os/exec"
+	"testing"
 
 	"moul.io/u"
 )
@@ -34,4 +35,35 @@ func ExampleCommandExists() {
 	// Output:
 	// true
 	// false
+}
+
+func BenchmarkCommandExists(b *testing.B) {
+	cases := []struct {
+		Command string
+	}{
+		{"go"},
+		{"asddsa"},
+	}
+	for _, bc := range cases {
+		b.Run(bc.Command, func(b *testing.B) {
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				u.CommandExists(bc.Command)
+			}
+		})
+		b.Run(bc.Command+"-parallel", func(b *testing.B) {
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					u.CommandExists(bc.Command)
+				}
+			})
+		})
+	}
+}
+
+func BenchmarkSafeExec(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		u.SafeExec(exec.Command("true"))
+	}
 }

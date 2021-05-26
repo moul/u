@@ -79,9 +79,9 @@ func BenchmarkB64Decode(b *testing.B) {
 		{"10000", strings.Repeat("a", 10000)},
 		{"100000", strings.Repeat("a", 100000)},
 	}
-	b.ResetTimer()
 	for _, bc := range cases {
 		b.Run(bc.Name, func(b *testing.B) {
+			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				_, err := u.B64Decode(bc.Data)
 				if err != nil {
