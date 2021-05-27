@@ -1,6 +1,7 @@
 package u
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 )
@@ -25,4 +26,17 @@ func JSON(input interface{}) string {
 func PrettyJSON(input interface{}) string {
 	out, _ := json.MarshalIndent(input, "", "  ")
 	return string(out)
+}
+
+// IsBinary returns whether the provided buffer looks like binary or human-readable.
+//
+// It is inspired by the implementation made in the Git project.
+// https://github.com/git/git/blob/49f38e2de47a401fc2b0f4cce38e9f07fb63df48/xdiff-interface.c#L188.
+func IsBinary(buf []byte) bool {
+	const prefixLen = 8000
+	if len(buf) > prefixLen {
+		buf = buf[0:prefixLen]
+	}
+	pos := bytes.IndexByte(buf, byte(0))
+	return pos != -1
 }

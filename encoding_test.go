@@ -43,6 +43,14 @@ func ExampleJSON() {
 	// null
 }
 
+func ExampleIsBinary() {
+	fmt.Println(u.IsBinary([]byte{'c', 'h', 'i', 'c', 'k', 'e', 'n'}))
+	fmt.Println(u.IsBinary([]byte{'c', 'h', 'i', 0, 'k', 'e', 'n'}))
+	// Output:
+	// false
+	// true
+}
+
 func BenchmarkB64Encode(b *testing.B) {
 	cases := []struct {
 		Name string
@@ -97,6 +105,34 @@ func BenchmarkB64Decode(b *testing.B) {
 					if err != nil {
 						b.Error(err)
 					}
+				}
+			})
+		})
+	}
+}
+
+func BenchmarkIsBinary(b *testing.B) {
+	cases := []struct {
+		Name string
+		Data []byte
+	}{
+		{"small-valid", bytes.Repeat([]byte{'A'}, 1)},
+		{"long-valid", bytes.Repeat([]byte{'A'}, 80000)},
+		{"small-invalid", []byte{'c', 'h', 'i', 0, 'k', 'e', 'n'}},
+		// long-invalid
+	}
+	for _, bc := range cases {
+		b.Run(bc.Name, func(b *testing.B) {
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				u.IsBinary(bc.Data)
+			}
+		})
+		b.Run(bc.Name+"-parallel", func(b *testing.B) {
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					u.IsBinary(bc.Data)
 				}
 			})
 		})
