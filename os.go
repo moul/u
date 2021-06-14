@@ -1,13 +1,11 @@
 package u
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/user"
-	"strings"
 )
 
 // TempfileWithContent creates a tempfile with specified content written in it, it also seeks the file pointer so you can read it directly.
@@ -46,35 +44,6 @@ func MustTempfileWithContent(content []byte) (*os.File, func()) {
 		panic(err)
 	}
 	return f, cleanup
-}
-
-func ExpandUser(path string) (string, error) {
-	// expand variables
-	path = os.ExpandEnv(path)
-
-	// replace ~ with homedir
-	if len(path) > 1 && path[:2] == "~/" {
-		home := os.Getenv("HOME") // *nix
-		if home == "" {
-			home = os.Getenv("USERPROFILE") // windows
-		}
-		if home == "" {
-			return "", errors.New("user home directory not found")
-		}
-
-		return strings.Replace(path, "~", home, 1), nil
-	}
-
-	return path, nil
-}
-
-// MustExpandUser wraps ExpandUser and panics if initialization fails.
-func MustExpandUser(path string) string {
-	ret, err := ExpandUser(path)
-	if err != nil {
-		panic(err)
-	}
-	return ret
 }
 
 // PathExists checks whether a path exists or not.
