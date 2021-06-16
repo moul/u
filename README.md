@@ -69,7 +69,12 @@ func ExecStandaloneOutputs(cmd *exec.Cmd) ([]byte, []byte, error)
     ExecStandaloneOutputs runs the command and returns its standard output and
     standard error.
 
-func ExpandUser(path string) (string, error)
+func ExpandPath(path string) (string, error)
+    ExpandPath performs various expansions on a given path.
+
+    - Replaces ~/ with $HOME/. - Returns absolute path. - Expands env vars.
+    TODO: - Follow symlinks.
+
 func FanIn(chans ...<-chan interface{}) <-chan interface{}
     FanIn merges multiple input chans events into one.
 
@@ -100,8 +105,8 @@ func MustCaptureStdoutAndStderr() func() string
     MustCaptureStdoutAndStderr wraps CaptureStdoutAndStderr and panics if
     initialization fails.
 
-func MustExpandUser(path string) string
-    MustExpandUser wraps ExpandUser and panics if initialization fails.
+func MustExpandPath(path string) string
+    MustExpandPath wraps ExpandPath and panics if initialization fails.
 
 func MustTempFileName(dir, pattern string) string
     MustTempFileName wraps TempFileName and panics if initialization fails.
@@ -212,57 +217,57 @@ $ go get moul.io/u
 ```txt
 benchmark                                            iter          time/iter
 ---------                                            ----          ---------
-BenchmarkUnzip-12                                    3795    281158.00 ns/op
-BenchmarkUnzipBytes-12                               3854    270661.00 ns/op
-BenchmarkB64Encode/1-12                          14475339        78.53 ns/op
-BenchmarkB64Encode/1-parallel-12                 95066647        11.42 ns/op
-BenchmarkB64Encode/1000-12                         450759      5188.00 ns/op
-BenchmarkB64Encode/1000-parallel-12               1379708       870.70 ns/op
-BenchmarkB64Encode/1000000-12                         279   4530342.00 ns/op
-BenchmarkB64Encode/1000000-parallel-12               2029    518956.00 ns/op
-BenchmarkB64Decode/1000-12                         403045      4057.00 ns/op
-BenchmarkB64Decode/1000-parallel-12               1795483       690.40 ns/op
-BenchmarkB64Decode/10000-12                         30897     37342.00 ns/op
-BenchmarkB64Decode/10000-parallel-12               193408      7130.00 ns/op
-BenchmarkB64Decode/100000-12                         5318    344592.00 ns/op
-BenchmarkB64Decode/100000-parallel-12               24860     47960.00 ns/op
-BenchmarkIsBinary/small-valid-12                134240438         8.63 ns/op
-BenchmarkIsBinary/small-valid-parallel-12       819188630         1.35 ns/op
-BenchmarkIsBinary/long-valid-12                   5294448       225.10 ns/op
-BenchmarkIsBinary/long-valid-parallel-12         27616174        36.47 ns/op
-BenchmarkIsBinary/small-invalid-12              141702962         8.35 ns/op
-BenchmarkIsBinary/small-invalid-parallel-12     746452850         1.40 ns/op
-BenchmarkCommandExists/go-12                       140930      8908.00 ns/op
-BenchmarkCommandExists/go-parallel-12              947446      1299.00 ns/op
-BenchmarkCommandExists/asddsa-12                    23431     51981.00 ns/op
-BenchmarkCommandExists/asddsa-parallel-12          155037      6934.00 ns/op
-BenchmarkSafeExec-12                                  679   2368421.00 ns/op
-BenchmarkCombineFuncs-12                          6238905       202.40 ns/op
-BenchmarkFuture-12                                1468946       802.00 ns/op
-BenchmarkRandomLetters/1000-12                     324505      4102.00 ns/op
-BenchmarkRandomLetters/1000-parallel-12             33856     35397.00 ns/op
-BenchmarkRandomLetters/10000-12                     29956     39849.00 ns/op
-BenchmarkRandomLetters/10000-parallel-12             3334    357897.00 ns/op
-BenchmarkRandomLetters/100000-12                     2995    394264.00 ns/op
-BenchmarkRandomLetters/100000-parallel-12             349   3509818.00 ns/op
-BenchmarkUniqueStrings/slice1-12                   849084      1424.00 ns/op
-BenchmarkUniqueStrings/slice1-parallel-12         5389947       220.00 ns/op
-BenchmarkUniqueStrings/slice2-12                     9249    251324.00 ns/op
-BenchmarkUniqueStrings/slice2-parallel-12           27469     43579.00 ns/op
-BenchmarkUniqueInts/slice1-12                     1474201       789.60 ns/op
-BenchmarkUniqueInts/slice1-parallel-12            9390207       126.50 ns/op
-BenchmarkUniqueInts/slice2-12                       10000    154489.00 ns/op
-BenchmarkUniqueInts/slice2-parallel-12              46874     25296.00 ns/op
-BenchmarkUniqueInterfaces/slice1-12                932260      1724.00 ns/op
-BenchmarkUniqueInterfaces/slice1-parallel-12      4381582       255.00 ns/op
-BenchmarkUniqueInterfaces/slice2-12                  2624    563016.00 ns/op
-BenchmarkUniqueInterfaces/slice2-parallel-12        10660    111471.00 ns/op
-BenchmarkShortDuration/Simple-12                 13368848        93.61 ns/op
-BenchmarkShortDuration/Simple-parallel-12        84225661        13.74 ns/op
-BenchmarkShortDuration/Complex-12                 2778331       462.80 ns/op
-BenchmarkShortDuration/Complex-parallel-12       13124893        81.04 ns/op
-BenchmarkBoolPtr/serial-12                     1000000000         0.41 ns/op
-BenchmarkBoolPtr/parallel-12                   1000000000         0.30 ns/op
+BenchmarkUnzip-12                                    3919    262998.00 ns/op
+BenchmarkUnzipBytes-12                               4461    249418.00 ns/op
+BenchmarkB64Encode/1-12                          15309999        82.28 ns/op
+BenchmarkB64Encode/1-parallel-12                 66409862        15.98 ns/op
+BenchmarkB64Encode/1000-12                         356790      4955.00 ns/op
+BenchmarkB64Encode/1000-parallel-12               1349776       839.50 ns/op
+BenchmarkB64Encode/1000000-12                         296   4421480.00 ns/op
+BenchmarkB64Encode/1000000-parallel-12               1935    562698.00 ns/op
+BenchmarkB64Decode/1000-12                         358122      3997.00 ns/op
+BenchmarkB64Decode/1000-parallel-12               1674694       688.20 ns/op
+BenchmarkB64Decode/10000-12                         35721     36986.00 ns/op
+BenchmarkB64Decode/10000-parallel-12               186091      5815.00 ns/op
+BenchmarkB64Decode/100000-12                         5961    342365.00 ns/op
+BenchmarkB64Decode/100000-parallel-12               25243     46691.00 ns/op
+BenchmarkIsBinary/small-valid-12                130751559         9.20 ns/op
+BenchmarkIsBinary/small-valid-parallel-12       721446243         1.43 ns/op
+BenchmarkIsBinary/long-valid-12                   5305724       232.00 ns/op
+BenchmarkIsBinary/long-valid-parallel-12         25722481        39.80 ns/op
+BenchmarkIsBinary/small-invalid-12              135880948         8.99 ns/op
+BenchmarkIsBinary/small-invalid-parallel-12     763902718         1.55 ns/op
+BenchmarkCommandExists/go-12                       111031     10957.00 ns/op
+BenchmarkCommandExists/go-parallel-12              718045      1587.00 ns/op
+BenchmarkCommandExists/asddsa-12                    24708     57858.00 ns/op
+BenchmarkCommandExists/asddsa-parallel-12          130980      8246.00 ns/op
+BenchmarkSafeExec-12                                  690   2308535.00 ns/op
+BenchmarkCombineFuncs-12                          5793744       203.80 ns/op
+BenchmarkFuture-12                                1492561       789.80 ns/op
+BenchmarkRandomLetters/1000-12                     326869      4196.00 ns/op
+BenchmarkRandomLetters/1000-parallel-12             37795     30892.00 ns/op
+BenchmarkRandomLetters/10000-12                     29838     41700.00 ns/op
+BenchmarkRandomLetters/10000-parallel-12             3884    305148.00 ns/op
+BenchmarkRandomLetters/100000-12                     2571    400259.00 ns/op
+BenchmarkRandomLetters/100000-parallel-12             386   2972860.00 ns/op
+BenchmarkUniqueStrings/slice1-12                   942453      1435.00 ns/op
+BenchmarkUniqueStrings/slice1-parallel-12         4134234       273.10 ns/op
+BenchmarkUniqueStrings/slice2-12                     8259    261283.00 ns/op
+BenchmarkUniqueStrings/slice2-parallel-12           21670     56012.00 ns/op
+BenchmarkUniqueInts/slice1-12                     1523756       843.80 ns/op
+BenchmarkUniqueInts/slice1-parallel-12            7665976       133.00 ns/op
+BenchmarkUniqueInts/slice2-12                       10000    159122.00 ns/op
+BenchmarkUniqueInts/slice2-parallel-12              61369     17542.00 ns/op
+BenchmarkUniqueInterfaces/slice1-12               1000000      1743.00 ns/op
+BenchmarkUniqueInterfaces/slice1-parallel-12      3386178       337.70 ns/op
+BenchmarkUniqueInterfaces/slice2-12                  2461    585875.00 ns/op
+BenchmarkUniqueInterfaces/slice2-parallel-12         8068    131634.00 ns/op
+BenchmarkShortDuration/Simple-12                 14830498        92.78 ns/op
+BenchmarkShortDuration/Simple-parallel-12        61034352        17.06 ns/op
+BenchmarkShortDuration/Complex-12                 2587477       504.30 ns/op
+BenchmarkShortDuration/Complex-parallel-12        8923653       123.70 ns/op
+BenchmarkBoolPtr/serial-12                     1000000000         0.43 ns/op
+BenchmarkBoolPtr/parallel-12                   1000000000         0.33 ns/op
 ```
 
 ## Contribute
