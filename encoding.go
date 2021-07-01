@@ -16,6 +16,16 @@ func B64Decode(input string) ([]byte, error) {
 	return base64.StdEncoding.DecodeString(input)
 }
 
+// IsASCII checks whether a buffer only contains ASCII characters.
+func IsASCII(buf []byte) bool {
+	for _, b := range buf {
+		if b > 0x7F {
+			return false
+		}
+	}
+	return true
+}
+
 // JSON returns a JSON representation of the passed input.
 func JSON(input interface{}) string {
 	out, _ := json.Marshal(input)

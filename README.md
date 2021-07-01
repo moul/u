@@ -85,6 +85,9 @@ func Future(fn func() (interface{}, error)) <-chan FutureRet
     Future starts running the given function in background and return a chan
     that will return the result of the execution.
 
+func IsASCII(buf []byte) bool
+    IsASCII checks whether a buffer only contains ASCII characters.
+
 func IsBinary(buf []byte) bool
     IsBinary returns whether the provided buffer looks like binary or
     human-readable.
@@ -215,59 +218,60 @@ $ go get moul.io/u
 
 [embedmd]:# (.tmp/bench.txt txt)
 ```txt
-benchmark                                            iter          time/iter
----------                                            ----          ---------
-BenchmarkUnzip-12                                    3919    262998.00 ns/op
-BenchmarkUnzipBytes-12                               4461    249418.00 ns/op
-BenchmarkB64Encode/1-12                          15309999        82.28 ns/op
-BenchmarkB64Encode/1-parallel-12                 66409862        15.98 ns/op
-BenchmarkB64Encode/1000-12                         356790      4955.00 ns/op
-BenchmarkB64Encode/1000-parallel-12               1349776       839.50 ns/op
-BenchmarkB64Encode/1000000-12                         296   4421480.00 ns/op
-BenchmarkB64Encode/1000000-parallel-12               1935    562698.00 ns/op
-BenchmarkB64Decode/1000-12                         358122      3997.00 ns/op
-BenchmarkB64Decode/1000-parallel-12               1674694       688.20 ns/op
-BenchmarkB64Decode/10000-12                         35721     36986.00 ns/op
-BenchmarkB64Decode/10000-parallel-12               186091      5815.00 ns/op
-BenchmarkB64Decode/100000-12                         5961    342365.00 ns/op
-BenchmarkB64Decode/100000-parallel-12               25243     46691.00 ns/op
-BenchmarkIsBinary/small-valid-12                130751559         9.20 ns/op
-BenchmarkIsBinary/small-valid-parallel-12       721446243         1.43 ns/op
-BenchmarkIsBinary/long-valid-12                   5305724       232.00 ns/op
-BenchmarkIsBinary/long-valid-parallel-12         25722481        39.80 ns/op
-BenchmarkIsBinary/small-invalid-12              135880948         8.99 ns/op
-BenchmarkIsBinary/small-invalid-parallel-12     763902718         1.55 ns/op
-BenchmarkCommandExists/go-12                       111031     10957.00 ns/op
-BenchmarkCommandExists/go-parallel-12              718045      1587.00 ns/op
-BenchmarkCommandExists/asddsa-12                    24708     57858.00 ns/op
-BenchmarkCommandExists/asddsa-parallel-12          130980      8246.00 ns/op
-BenchmarkSafeExec-12                                  690   2308535.00 ns/op
-BenchmarkCombineFuncs-12                          5793744       203.80 ns/op
-BenchmarkFuture-12                                1492561       789.80 ns/op
-BenchmarkRandomLetters/1000-12                     326869      4196.00 ns/op
-BenchmarkRandomLetters/1000-parallel-12             37795     30892.00 ns/op
-BenchmarkRandomLetters/10000-12                     29838     41700.00 ns/op
-BenchmarkRandomLetters/10000-parallel-12             3884    305148.00 ns/op
-BenchmarkRandomLetters/100000-12                     2571    400259.00 ns/op
-BenchmarkRandomLetters/100000-parallel-12             386   2972860.00 ns/op
-BenchmarkUniqueStrings/slice1-12                   942453      1435.00 ns/op
-BenchmarkUniqueStrings/slice1-parallel-12         4134234       273.10 ns/op
-BenchmarkUniqueStrings/slice2-12                     8259    261283.00 ns/op
-BenchmarkUniqueStrings/slice2-parallel-12           21670     56012.00 ns/op
-BenchmarkUniqueInts/slice1-12                     1523756       843.80 ns/op
-BenchmarkUniqueInts/slice1-parallel-12            7665976       133.00 ns/op
-BenchmarkUniqueInts/slice2-12                       10000    159122.00 ns/op
-BenchmarkUniqueInts/slice2-parallel-12              61369     17542.00 ns/op
-BenchmarkUniqueInterfaces/slice1-12               1000000      1743.00 ns/op
-BenchmarkUniqueInterfaces/slice1-parallel-12      3386178       337.70 ns/op
-BenchmarkUniqueInterfaces/slice2-12                  2461    585875.00 ns/op
-BenchmarkUniqueInterfaces/slice2-parallel-12         8068    131634.00 ns/op
-BenchmarkShortDuration/Simple-12                 14830498        92.78 ns/op
-BenchmarkShortDuration/Simple-parallel-12        61034352        17.06 ns/op
-BenchmarkShortDuration/Complex-12                 2587477       504.30 ns/op
-BenchmarkShortDuration/Complex-parallel-12        8923653       123.70 ns/op
-BenchmarkBoolPtr/serial-12                     1000000000         0.43 ns/op
-BenchmarkBoolPtr/parallel-12                   1000000000         0.33 ns/op
+benchmark                                           iter           time/iter
+---------                                           ----           ---------
+BenchmarkUnzip-8                                    4101     251654.00 ns/op
+BenchmarkUnzipBytes-8                               4842     213715.00 ns/op
+BenchmarkB64Encode/1-8                          30219784         38.44 ns/op
+BenchmarkB64Encode/1-parallel-8                120309013         10.42 ns/op
+BenchmarkB64Encode/1000-8                         962917       1256.00 ns/op
+BenchmarkB64Encode/1000-parallel-8               1627962        815.00 ns/op
+BenchmarkB64Encode/1000000-8                        1094    1092692.00 ns/op
+BenchmarkB64Encode/1000000-parallel-8               3328     364672.00 ns/op
+BenchmarkB64Decode/1000-8                        1000000       1091.00 ns/op
+BenchmarkB64Decode/1000-parallel-8               1971834        598.80 ns/op
+BenchmarkB64Decode/10000-8                        131664       8624.00 ns/op
+BenchmarkB64Decode/10000-parallel-8               274162       4768.00 ns/op
+BenchmarkB64Decode/100000-8                        15345      77537.00 ns/op
+BenchmarkB64Decode/100000-parallel-8               32480      34873.00 ns/op
+BenchmarkIsBinary/small-valid-8                173952991          6.74 ns/op
+BenchmarkIsBinary/small-valid-parallel-8       836416648          1.45 ns/op
+BenchmarkIsBinary/long-valid-8                   1916740        625.70 ns/op
+BenchmarkIsBinary/long-valid-parallel-8          8315928        149.70 ns/op
+BenchmarkIsBinary/small-invalid-8              170598688          7.08 ns/op
+BenchmarkIsBinary/small-invalid-parallel-8     783116866          1.72 ns/op
+BenchmarkCommandExists/go-8                       145177       8699.00 ns/op
+BenchmarkCommandExists/go-parallel-8              278449       4384.00 ns/op
+BenchmarkCommandExists/asddsa-8                    38422      32856.00 ns/op
+BenchmarkCommandExists/asddsa-parallel-8           69381      18171.00 ns/op
+BenchmarkSafeExec-8                                   92   11439103.00 ns/op
+BenchmarkIsASCII-8                             227565444          5.34 ns/op
+BenchmarkCombineFuncs-8                         23210830         52.56 ns/op
+BenchmarkFuture-8                                4820587        263.70 ns/op
+BenchmarkRandomLetters/1000-8                     783525       1572.00 ns/op
+BenchmarkRandomLetters/1000-parallel-8             91543      12743.00 ns/op
+BenchmarkRandomLetters/10000-8                     81429      14677.00 ns/op
+BenchmarkRandomLetters/10000-parallel-8             9618     127306.00 ns/op
+BenchmarkRandomLetters/100000-8                     8164     148755.00 ns/op
+BenchmarkRandomLetters/100000-parallel-8             914    1299007.00 ns/op
+BenchmarkUniqueStrings/slice1-8                  2245912        553.70 ns/op
+BenchmarkUniqueStrings/slice1-parallel-8         5644569        357.00 ns/op
+BenchmarkUniqueStrings/slice2-8                     9151     114607.00 ns/op
+BenchmarkUniqueStrings/slice2-parallel-8           20236      55601.00 ns/op
+BenchmarkUniqueInts/slice1-8                     3188648        371.30 ns/op
+BenchmarkUniqueInts/slice1-parallel-8            9704232        117.50 ns/op
+BenchmarkUniqueInts/slice2-8                       16548      66907.00 ns/op
+BenchmarkUniqueInts/slice2-parallel-8              57608      21750.00 ns/op
+BenchmarkUniqueInterfaces/slice1-8               1480366        962.20 ns/op
+BenchmarkUniqueInterfaces/slice1-parallel-8      4402994        261.30 ns/op
+BenchmarkUniqueInterfaces/slice2-8                  4614     254938.00 ns/op
+BenchmarkUniqueInterfaces/slice2-parallel-8        10000     125025.00 ns/op
+BenchmarkShortDuration/Simple-8                 23745075         47.64 ns/op
+BenchmarkShortDuration/Simple-parallel-8       100000000         11.24 ns/op
+BenchmarkShortDuration/Complex-8                 4912780        231.40 ns/op
+BenchmarkShortDuration/Complex-parallel-8       13411066         75.40 ns/op
+BenchmarkBoolPtr/serial-8                     1000000000          0.32 ns/op
+BenchmarkBoolPtr/parallel-8                   1000000000          0.28 ns/op
 ```
 
 ## Contribute
