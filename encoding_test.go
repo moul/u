@@ -138,3 +138,14 @@ func BenchmarkIsBinary(b *testing.B) {
 		})
 	}
 }
+
+func ExampleIsASCII() {
+	fmt.Println(u.IsASCII([]byte("hello")))
+	// Output: true
+}
+
+func BenchmarkIsASCII(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		u.IsASCII([]byte("hello"))
+	}
+}
