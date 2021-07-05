@@ -33,3 +33,5 @@ gin-bin
 
 # IDE Settings
 .idea
+.history/
+.vscode/
