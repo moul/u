@@ -8,7 +8,7 @@ import (
 // MutexMap is thread-safe.
 type MutexMap struct {
 	self    sync.Mutex
-	entries map[string]*sync.Mutex
+	entries map[string]*sync.RWMutex
 }
 
 // Lock locks a mutex by key, and returns a callback for unlocking unlock.
@@ -16,14 +16,31 @@ type MutexMap struct {
 func (mm *MutexMap) Lock(key string) func() {
 	mm.self.Lock()
 	if mm.entries == nil {
-		mm.entries = make(map[string]*sync.Mutex)
+		mm.entries = make(map[string]*sync.RWMutex)
 	}
 	if _, found := mm.entries[key]; !found {
-		mm.entries[key] = &sync.Mutex{}
+		mm.entries[key] = &sync.RWMutex{}
 	}
 
 	entry := mm.entries[key]
 	entry.Lock()
 	mm.self.Unlock()
 	return entry.Unlock
+}
+
+// RLock locks a mutex by key for reading, and returns a callback for unlocking unlock.
+// RLock will automatically create a new mutex for new keys.
+func (mm *MutexMap) RLock(key string) func() {
+	mm.self.Lock()
+	if mm.entries == nil {
+		mm.entries = make(map[string]*sync.RWMutex)
+	}
+	if _, found := mm.entries[key]; !found {
+		mm.entries[key] = &sync.RWMutex{}
+	}
+
+	entry := mm.entries[key]
+	entry.RLock()
+	mm.self.Unlock()
+	return entry.RUnlock
 }

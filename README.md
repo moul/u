@@ -190,6 +190,10 @@ func (mm *MutexMap) Lock(key string) func()
     Lock locks a mutex by key, and returns a callback for unlocking unlock. Lock
     will automatically create a new mutex for new keys.
 
+func (mm *MutexMap) RLock(key string) func()
+    RLock locks a mutex by key for reading, and returns a callback for unlocking
+    unlock. RLock will automatically create a new mutex for new keys.
+
 type UniqueChild interface {
 	SetChild(childFn func(context.Context))
 	CloseChild()
@@ -272,6 +276,57 @@ BenchmarkShortDuration/Complex-8                 4912780        231.40 ns/op
 BenchmarkShortDuration/Complex-parallel-8       13411066         75.40 ns/op
 BenchmarkBoolPtr/serial-8                     1000000000          0.32 ns/op
 BenchmarkBoolPtr/parallel-8                   1000000000          0.28 ns/op
+benchmark                                           iter          time/iter
+---------                                           ----          ---------
+BenchmarkUnzip-12                                   4551    264133.00 ns/op
+BenchmarkUnzipBytes-12                              4507    243344.00 ns/op
+BenchmarkB64Encode/1-12                         16033570        80.95 ns/op
+BenchmarkB64Encode/1-parallel-12                59893237        17.48 ns/op
+BenchmarkB64Encode/1000-12                        379872      4646.00 ns/op
+BenchmarkB64Encode/1000-parallel-12              1243312       945.10 ns/op
+BenchmarkB64Encode/1000000-12                        315   4063088.00 ns/op
+BenchmarkB64Encode/1000000-parallel-12              2054    597679.00 ns/op
+BenchmarkB64Decode/1000-12                        424038      3637.00 ns/op
+BenchmarkB64Decode/1000-parallel-12              1633958       732.70 ns/op
+BenchmarkB64Decode/10000-12                        33224     35140.00 ns/op
+BenchmarkB64Decode/10000-parallel-12              200544      6350.00 ns/op
+BenchmarkB64Decode/100000-12                        4921    326188.00 ns/op
+BenchmarkB64Decode/100000-parallel-12              24049     49786.00 ns/op
+BenchmarkIsBinary/small-valid-12               123109468         9.29 ns/op
+BenchmarkIsBinary/small-valid-parallel-12      747959686         1.54 ns/op
+BenchmarkIsBinary/long-valid-12                  5283378       240.30 ns/op
+BenchmarkIsBinary/long-valid-parallel-12        26021748        41.87 ns/op
+BenchmarkIsBinary/small-invalid-12             130593402         9.19 ns/op
+BenchmarkIsBinary/small-invalid-parallel-12    662583970         1.57 ns/op
+BenchmarkCommandExists/go-12                      132699      9937.00 ns/op
+BenchmarkCommandExists/go-parallel-12             593409      1715.00 ns/op
+BenchmarkCommandExists/asddsa-12                   24820     52140.00 ns/op
+BenchmarkCommandExists/asddsa-parallel-12         130977      8541.00 ns/op
+BenchmarkSafeExec-12                                 644   2378627.00 ns/op
+BenchmarkCombineFuncs-12                         6741579       204.20 ns/op
+BenchmarkFuture-12                               1504198       780.20 ns/op
+BenchmarkRandomLetters/1000-12                    286212      4019.00 ns/op
+BenchmarkRandomLetters/1000-parallel-12            40786     29071.00 ns/op
+BenchmarkRandomLetters/10000-12                    29296     40241.00 ns/op
+BenchmarkRandomLetters/10000-parallel-12            4363    286588.00 ns/op
+BenchmarkRandomLetters/100000-12                    3165    400320.00 ns/op
+BenchmarkRandomLetters/100000-parallel-12            421   2877871.00 ns/op
+BenchmarkUniqueStrings/slice1-12                  963402      1430.00 ns/op
+BenchmarkUniqueStrings/slice1-parallel-12        4290940       307.50 ns/op
+BenchmarkUniqueStrings/slice2-12                    6712    246924.00 ns/op
+BenchmarkUniqueStrings/slice2-parallel-12          21454     56186.00 ns/op
+BenchmarkUniqueInts/slice1-12                    1453717       834.20 ns/op
+BenchmarkUniqueInts/slice1-parallel-12           7538754       144.30 ns/op
+BenchmarkUniqueInts/slice2-12                      10000    146356.00 ns/op
+BenchmarkUniqueInts/slice2-parallel-12             61899     20556.00 ns/op
+BenchmarkUniqueInterfaces/slice1-12               911822      1778.00 ns/op
+BenchmarkUniqueInterfaces/slice1-parallel-12     3223353       360.10 ns/op
+BenchmarkUniqueInterfaces/slice2-12                 2418    564324.00 ns/op
+BenchmarkUniqueInterfaces/slice2-parallel-12        7670    140357.00 ns/op
+BenchmarkShortDuration/Simple-12                13385139        98.24 ns/op
+BenchmarkShortDuration/Simple-parallel-12       59156300        18.38 ns/op
+BenchmarkShortDuration/Complex-12                2444396       486.20 ns/op
+BenchmarkShortDuration/Complex-parallel-12       9201567       132.90 ns/op
 ```
 
 ## Contribute
