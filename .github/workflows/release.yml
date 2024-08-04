@@ -11,14 +11,14 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3.6.0
       -
         name: Unshallow
         run: git fetch --prune --unshallow
       -
         name: Run Semantic Release
         id: semantic
-        uses: codfish/semantic-release-action@v2.0.0
+        uses: codfish/semantic-release-action@v2.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #      -
