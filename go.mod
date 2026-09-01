@@ -1,15 +1,17 @@
 module moul.io/u
 
-go 1.13
+go 1.26
 
 require (
-	github.com/kr/text v0.2.0 // indirect
-	github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e // indirect
-	github.com/stretchr/testify v1.8.0
-	github.com/tailscale/depaware v0.0.0-20210622194025-720c4b409502
-	go.uber.org/multierr v1.8.0
-	golang.org/x/mod v0.4.2 // indirect
-	golang.org/x/sys v0.0.0-20210330210617-4fbd30eecc44 // indirect
-	golang.org/x/tools v0.1.0 // indirect
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+	github.com/stretchr/testify v1.12.1
+	github.com/tailscale/depaware v0.0.0-20260720165112-f20f66241ec6
+	go.uber.org/multierr v1.11.0
+)
+
+require (
+	github.com/pkg/diff v0.0.0-20241224192749-4e6772a4315c // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
+	golang.org/x/mod v0.35.0 // indirect
+	golang.org/x/sync v0.20.0 // indirect
+	golang.org/x/tools v0.44.0 // indirect
 )
